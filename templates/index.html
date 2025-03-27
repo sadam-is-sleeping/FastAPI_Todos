@@ -61,11 +61,11 @@
 				const li = document.createElement('li');
 				li.className = 'list-group-item d-flex justify-content-between align-items-center';
 				li.id = `todo-${todo.id}`;
-				
+				const dateTime = new Date(todo.id).toLocaleString();
 				// todo element
 				const todoContent = document.createElement('div');
 				// title: description (todo.completed)
-				todoContent.innerHTML = `<strong>${todo.title}:</strong> ${todo.description} <span class="badge ${todo.completed ? 'bg-success' : 'bg-secondary'} ms-2">${todo.completed ? 'Completed' : 'Pending'}</span>`;
+				todoContent.innerHTML = `<strong>${todo.title}:</strong> ${todo.description}<br><small class="text-muted">${dateTime}</small><span class="badge ${todo.completed ? 'bg-success' : 'bg-secondary'} ms-2">${todo.completed ? 'Completed' : 'Pending'}</span>`;
 
 				const buttonsDiv = document.createElement('div');
 				buttonsDiv.className = 'btn-group';
