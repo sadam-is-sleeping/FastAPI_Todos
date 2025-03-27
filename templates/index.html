@@ -26,8 +26,11 @@
                 <div class="col-md-7">
                     <input type="text" id="description" class="form-control" placeholder="Description" required>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button type="submit" id="submit-btn" class="btn btn-primary w-100">Add To-Do</button>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" id="clear-btn" class="btn btn-light w-100">Clear</button>
                 </div>
             </div>
         </form>
@@ -73,7 +76,7 @@
             const todoContent = document.createElement('div');
             todoContent.innerHTML = `
             <strong>${todo.title}:</strong> ${todo.description} 
-            <br><small class="text-muted">Created on: ${dateTime}</small> 
+            <br><small class="text-muted">${dateTime}</small> 
             <span class="badge ${todo.completed ? 'bg-success' : 'bg-secondary'} ms-2">
                 ${todo.completed ? 'Completed' : 'Pending'}
             </span>`;
@@ -172,6 +175,13 @@
         // change to update
         document.getElementById('submit-btn').textContent = 'Update To-Do';
     }
+
+    document.getElementById('clear-btn').addEventListener('click', () => {
+    	document.getElementById('id').value = '';
+    	document.getElementById('title').value = '';
+    	document.getElementById('description').value = '';
+    	document.getElementById('submit-btn').textContent = 'Add To-Do';
+    });
 
     // toggle completed
     async function toggleCompletion(todo) {
