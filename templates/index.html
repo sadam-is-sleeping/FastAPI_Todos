@@ -264,6 +264,9 @@
     });
 
     // del
+    document.getElementById('deleteModal').addEventListener('shown.bs.modal', () => {
+    	document.getElementById('confirmDelete').focus();
+    });
     document.getElementById('confirmDelete').addEventListener('click', async (event) => {
         // get todo id
         const todoId = event.target.getAttribute('data-todo-id');
