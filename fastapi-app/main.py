@@ -11,6 +11,7 @@ class TodoItem(BaseModel):
     id: int
     title: str
     description: str
+    due_to: int
     completed: bool
 
 # set json path
