@@ -97,10 +97,12 @@
 			const todoContent = document.createElement('div');
 			todoContent.innerHTML = `
 			<strong>${todo.title}:</strong> ${todo.description} 
-			<br><small class="text-muted">${dateTime}</small> 
-			<span class="badge ${todo.completed ? 'bg-success' : 'bg-secondary'} ms-2">
-				${todo.completed ? 'Completed' : 'Pending'}
-			</span>`;
+			<br><small class="text-muted">${dateTime}</small>`;
+			if (todo.completed)
+				todoContent.innerHTML += `<span class="badge bg-success ms-2">Completed</span>`;
+			else if (todo.due_to && todo.due_to < new Date())
+				todoContent.innerHTML += `<span class="badge bg-danger ms-2">Expired</span>`;
+			else todoContent.innerHTML += `<span class="badge bg-secondary ms-2">Pending</span>`;
 
 			if (todo.due_to) {
 				todoContent.setAttribute('data-bs-toggle', 'tooltip');
