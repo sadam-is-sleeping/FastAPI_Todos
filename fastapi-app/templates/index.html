@@ -102,6 +102,11 @@
 				${todo.completed ? 'Completed' : 'Pending'}
 			</span>`;
 
+			if (todo.due_to) {
+				todoContent.setAttribute('data-bs-toggle', 'tooltip');
+				todoContent.setAttribute('data-bs-title', `Due To: ${new Date(todo.due_to).toLocaleDateString()}`);
+			}
+
 			const buttonsDiv = document.createElement('div');
 			buttonsDiv.className = 'btn-group';
 			buttonsDiv.role = 'group';
@@ -140,6 +145,8 @@
 
 			todoList.appendChild(li);
 		});
+		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 	}
 
 	// Drag and Drop Handlers
