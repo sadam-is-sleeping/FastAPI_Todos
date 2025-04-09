@@ -36,14 +36,12 @@ def test_get_todos_with_items():
 
 def test_create_todo():
     todo = {
-        "1": {
-            "id": 1,
-            "title": "Test",
-            "description": "Test description",
-            "due_to": 0,
-            "completed": False
-            }
-        }
+        "id": 1,
+        "title": "Test",
+        "description": "Test description",
+        "due_to": 0,
+        "completed": False
+    }
     response = client.post("/todos", json=todo)
     assert response.status_code == 200
     assert response.json()["1"]["title"] == "Test"
@@ -62,26 +60,23 @@ def test_update_todo():
         completed = False)
     save_todos({"1": todo.dict()})
     updated_todo = {
-        "1": {
-            "id": 1,
-            "title": "Updated",
-            "description": "Updated description",
-            "due_to": 0,
-            "completed": True}}
+        "id": 1,
+        "title": "Updated",
+        "description": "Updated description",
+        "due_to": 0,
+        "completed": True}
     response = client.put("/todos/1", json=updated_todo)
     assert response.status_code == 200
     assert response.json()["1"]["title"] == "Updated"
 
 def test_update_todo_not_found():
     updated_todo = {
-        "1": {
-            "id": 1,
-            "title": "Updated",
-            "description": "Updated description",
-            "due_to": 0,
-            "completed": True
-            }
-        }
+        "id": 1,
+        "title": "Updated",
+        "description": "Updated description",
+        "due_to": 0,
+        "completed": True
+    }
     response = client.put("/todos/1", json=updated_todo)
     assert response.status_code == 404
 
