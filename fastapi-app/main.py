@@ -50,9 +50,10 @@ def create_todo(todo: TodoItem):
 @app.put('/todos/{todo_id}', response_model = TodoItem)
 def update_todo(todo_id: int, updated_todo: TodoItem):
     todos = load_todos()
-    todos[str(todo_id)].update(updated_todo.dict())
-    save_todos(todos)
-    return updated_todo
+    if str(todo_id) in todos:
+        todos[str(todo_id)].update(updated_todo.dict())
+        save_todos(todos)
+        return updated_todo
     raise HTTPException(status_code = 404, detail = 'To-Do item not found')
 
 # Delete To-Do item

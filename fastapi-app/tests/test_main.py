@@ -44,7 +44,7 @@ def test_create_todo():
     }
     response = client.post("/todos", json=todo)
     assert response.status_code == 200
-    assert response.json()["1"]["title"] == "Test"
+    assert response.json()["title"] == "Test"
 
 def test_create_todo_invalid():
     todo = {"1": {"id": 1, "title": "Test"}}
@@ -67,7 +67,7 @@ def test_update_todo():
         "completed": True}
     response = client.put("/todos/1", json=updated_todo)
     assert response.status_code == 200
-    assert response.json()["1"]["title"] == "Updated"
+    assert response.json()["title"] == "Updated"
 
 def test_update_todo_not_found():
     updated_todo = {
