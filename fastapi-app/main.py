@@ -70,3 +70,18 @@ def root():
     with open('templates/index.html', mode = 'rt') as f:
         content = f.read()
     return HTMLResponse(content = content)
+
+# Reorder whole todos
+@app.put('/reorder', response_model = dict)
+def reorder_todos(ordered_ids: list[int]):
+    todos = load_todos()
+    ordered_todos = {}
+    for todo_id in ordered_ids:
+        todo_id_str = str(todo_id)
+        if todo_id_str in todos:
+            ordered_todos[todo_id_str] = todos[todo_id_str]
+    save_todos(ordered_todos)
+    return {
+        'message': 'To-Do items reordered',
+        'data': ordered_ids,
+        }

@@ -186,6 +186,7 @@
 			[...todoList.children].forEach((item, newIndex) => {
 				item.dataset.index = newIndex;
 			});
+			updateTodoOrder();
 		}
 	}
 
@@ -247,6 +248,26 @@
 			fetchTodos();
 		} else {
 			console.error('Failed to update todo');
+		}
+	}
+
+	async function updateTodoOrder() {
+		const todoList = document.getElementById('todo-list');
+		const orderedIds = Array.from(todoList.children).map(item => parseInt(item.id.split('-')[1]));
+		console.log(orderedIds);
+		try {
+			const response = await fetch('/reorder', {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(orderedIds)
+			});
+			if (!response.ok) {
+				console.error('Failed to update todo order');
+			}
+		} catch (error) {
+			console.error('Error while updating todo order:', error);
 		}
 	}
 
