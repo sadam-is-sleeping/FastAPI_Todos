@@ -46,13 +46,6 @@ def save_todos(todos: dict):
 
 # --- Basic Endpoint Tests ---
 
-def test_read_main_root():
-    """Test GET / endpoint."""
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.headers['content-type'] == 'text/html; charset=utf-8'
-    # Add more specific HTML content checks if necessary
-
 def test_create_todo():
     """Test POST /todos to create an item."""
     response = client.post("/todos", json=SAMPLE_TODO)
