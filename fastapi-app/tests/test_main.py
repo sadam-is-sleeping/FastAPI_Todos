@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 import pytest
 from fastapi.testclient import TestClient
-from main import app, save_todos, load_todos, TodoItem
+from main import app, save_todos, load_todos, TodoItem, TODO_FILE
 
 client = TestClient(app)
 
@@ -17,6 +17,12 @@ def setup_and_teardown():
     save_todos({})
 
 def test_get_todos_empty():
+    response = client.get("/todos")
+    assert response.status_code == 200
+    assert response.json() == {}
+
+def test_get_todos_no_file():
+    os.remove(TODO_FILE)  # Remove the file
     response = client.get("/todos")
     assert response.status_code == 200
     assert response.json() == {}
