@@ -60,6 +60,19 @@
 			</div>
 		</div>
 	</div>
+	<!-- Deletion Toast -->
+	<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container">
+		<div id="deletedToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<strong class="me-auto" id="toastTodoTitle"></strong>
+				<small id="toastTodoTime"></small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				To-Do has been deleted successfully.
+			</div>
+		  </div>
+	</div>
 	<script>
 	const chk_due = document.getElementById('enable_due_to');
 	const lbl_due = document.getElementById('enable_due_to_label');
@@ -350,6 +363,15 @@
 				if (!response.ok) {
 					const errorData = await response.json();
 					console.error('Failed to delete todo:', errorData);
+				}
+				else {
+					const todoElement = document.getElementById(`todo-${todoId}`);
+					const toastTodoTitle = document.getElementById('toastTodoTitle');
+					const toastTodoTime = document.getElementById('toastTodoTime');
+					toastTodoTitle.textContent = todoElement.querySelector('strong').textContent.slice(0, -1);
+					toastTodoTime.textContent = todoElement.querySelector('small').textContent;
+					const deletedToast = new bootstrap.Toast(document.getElementById('deletedToast'));
+					deletedToast.show();
 				}
 				// Refresh todo list
 				fetchTodos();
