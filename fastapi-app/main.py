@@ -14,8 +14,10 @@ class TodoItem(BaseModel):
     due_to: int
     completed: bool
 
-# set json path
-TODO_FILE = Path('todo.json')
+# set paths
+BASE_DIR = Path(__file__).resolve().parent
+TEMPLATE_DIR = BASE_DIR / 'templates'
+TODO_FILE = BASE_DIR / 'todo.json'
 
 # Load To-Do from JSON file
 def load_todos() -> dict:
