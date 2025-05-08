@@ -226,4 +226,4 @@ def test_reorder():
     assert r_reorder.json().get("data") == [2, 1]
     response = client.get("/todos")
     assert response.status_code == 200
-    assert response.json().keys() == ['2', '1']
+    assert list(response.json().keys()) == ['2', '1']
