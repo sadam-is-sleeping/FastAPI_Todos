@@ -221,6 +221,8 @@ def test_reorder():
         }
     )
     r2 = client.post("/todos", json=SAMPLE_TODO2)
+    assert r1.status_code == 200
+    assert r2.status_code == 200
     r_reorder = client.put("/reorder", json=[2, 1])
     assert r_reorder.status_code == 200
     assert r_reorder.json().get("data") == [2, 1]
