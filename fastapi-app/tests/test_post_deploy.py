@@ -209,3 +209,21 @@ def test_api_handles_corrupted_json_file():
     # Verify the file is now valid and contains the new item
     response_get_after = client.get("/todos")
     assert str(SAMPLE_TODO["id"]) in response_get_after.json()
+
+def test_reorder():
+    r1 = client.post("/todos", json=SAMPLE_TODO)
+    SAMPLE_TODO2 = SAMPLE_TODO.copy()
+    SAMPLE_TODO2.update(
+        {
+            "id": 2,
+            "title": "Test Todo 2",
+            "due_to": 1234567,
+        }
+    )
+    r2 = client.post("/todos", json=SAMPLE_TODO2)
+    r_reorder = client.post("/reorder", json={[2, 1]})
+    assert r_reorder.status_code == 200
+    assert r_reorder.json().get("data") == [2, 1]
+    response = client.get("/todos")
+    assert response.status_code == 200
+    assert response.json().keys() == [2, 1]
