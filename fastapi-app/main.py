@@ -18,6 +18,7 @@ class TodoItem(BaseModel):
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATE_DIR = BASE_DIR / 'templates'
 TODO_FILE = BASE_DIR / 'todo.json'
+HTML_FILE = TEMPLATE_DIR / 'index.html'
 
 # Load To-Do from JSON file
 def load_todos() -> dict:
@@ -69,7 +70,7 @@ def delete_todo(todo_id: int):
 # Serve HTML file
 @app.get('/', response_class = HTMLResponse)
 def root():
-    with open('templates/index.html', mode = 'rt') as f:
+    with open(HTML_FILE, mode = 'rt') as f:
         content = f.read()
     return HTMLResponse(content = content)
 
