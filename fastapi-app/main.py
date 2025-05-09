@@ -4,7 +4,12 @@ from pydantic import BaseModel
 import json
 from pathlib import Path
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 app = FastAPI()
+
+# Prometheus 메트릭스 엔드포인트 (/metrics)
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 # To-Do Item model
 class TodoItem(BaseModel):
