@@ -101,6 +101,7 @@
 			li.className = 'list-group-item d-flex justify-content-between align-items-center';
 			li.id = `todo-${todo.id}`;
 			li.setAttribute('draggable', 'true'); // Enable dragging
+			li.addEventListener('dblclick', () => editTodo(todo)); // Double-click to edit
 			li.dataset.index = index; // Store index for ordering
 
 			// Convert timestamp to readable date-time format
