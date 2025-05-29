@@ -30,19 +30,29 @@ services:
     networks:
       - loadtest-net
 
-  influxdb:
+  influxdb2:
     image: influxdb:2
-    container_name: influxdb
+    container_name: influxdb2
     ports:
       - "8086:8086"
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME: admin
-      DOCKER_INFLUXDB_INIT_PASSWORD: admin
+      DOCKER_INFLUXDB_INIT_USERNAME_FILE: /run/secrets/influxdb-admin-username
+      DOCKER_INFLUXDB_INIT_PASSWORD_FILE: /run/secrets/influxdb-admin-password
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN_FILE: /run/secrets/influxdb-admin-token
       DOCKER_INFLUXDB_INIT_ORG: sogang
       DOCKER_INFLUXDB_INIT_BUCKET: home
+    secrets:
+      - influxdb-admin-username
+      - influxdb-admin-password
+      - influxdb-admin-token
     volumes:
-      - influxdb-data:/var/lib/influxdb
+      - type: volume
+        source: influxdb2-data
+        target: /var/lib/influxdb2
+      - type: volume
+        source: influxdb2-config
+        target: /etc/influxdb2
     networks:
       - loadtest-net
 
@@ -114,10 +124,19 @@ networks:
   loadtest-net:
     driver: bridge
 
+secrets:
+  influxdb-admin-username:
+    file: ~/influxdb-admin-username
+  influxdb-admin-password:
+    file: ~/influxdb-admin-password
+  influxdb-admin-token:
+    file: ~/influxdb-admin-token
+
 volumes:
   sonarqube_conf:
   sonarqube_data:
   sonarqube_logs:
   sonarqube_extensions:
   grafana-data:
-  influxdb-data:
+  influxdb2-data:
+  influxdb2-config:
