@@ -103,7 +103,6 @@
           </HeaderManager>
           <hashTree />
         </hashTree>
-        <hashTree />
         <!-- 샘플러 3: GET /todos (전체 TODO 조회) -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy"
           testname="GET /todos" enabled="true">
@@ -155,7 +154,6 @@
           </HeaderManager>
           <hashTree />
         </hashTree>
-        <hashTree />
       </hashTree>
     </hashTree>
   </hashTree>
