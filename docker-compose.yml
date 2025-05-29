@@ -126,11 +126,11 @@ networks:
 
 secrets:
   influxdb-admin-username:
-    file: ~/influxdb-admin-username
+    file: influxdb-admin-username
   influxdb-admin-password:
-    file: ~/influxdb-admin-password
+    file: influxdb-admin-password
   influxdb-admin-token:
-    file: ~/influxdb-admin-token
+    file: influxdb-admin-token
 
 volumes:
   sonarqube_conf:
