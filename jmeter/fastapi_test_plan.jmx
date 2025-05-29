@@ -110,7 +110,6 @@
           </HeaderManager>
           <hashTree />
         </hashTree>
-        <hashTree />
         <!-- 샘플러 3: GET /users (전체 사용자 조회) -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy"
           testname="GET /todos" enabled="true">
