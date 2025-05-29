@@ -98,7 +98,7 @@
           <stringProp name="HTTPSampler.monitor">false</stringProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager"
+        <!-- <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager"
           testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
@@ -106,7 +106,7 @@
               <stringProp name="Header.value">application/json</stringProp>
             </elementProp>
           </collectionProp>
-        </HeaderManager>
+        </HeaderManager> -->
         <hashTree />
         <!-- 샘플러 3: GET /users (전체 사용자 조회) -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy"
