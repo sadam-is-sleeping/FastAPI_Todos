@@ -39,32 +39,6 @@ services:
     networks:
       - loadtest-net
 
-  influxdb2:
-    image: influxdb:2
-    container_name: influxdb2
-    ports:
-      - "8086:8086"
-    environment:
-      DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME_FILE: /run/secrets/influxdb-admin-username
-      DOCKER_INFLUXDB_INIT_PASSWORD_FILE: /run/secrets/influxdb-admin-password
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN_FILE: /run/secrets/influxdb-admin-token
-      DOCKER_INFLUXDB_INIT_ORG: sogang
-      DOCKER_INFLUXDB_INIT_BUCKET: home
-    secrets:
-      - influxdb-admin-username
-      - influxdb-admin-password
-      - influxdb-admin-token
-    volumes:
-      - type: volume
-        source: influxdb2-data
-        target: /var/lib/influxdb2
-      - type: volume
-        source: influxdb2-config
-        target: /etc/influxdb2
-    networks:
-      - loadtest-net
-
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube
