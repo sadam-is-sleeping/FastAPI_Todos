@@ -68,12 +68,12 @@ def load_todos() -> dict:
     if TODO_FILE.is_file():
         with open(TODO_FILE, mode="rt", encoding="utf-8") as f:
             try:
-                if is_influxdb_installed:
-                    write_api.write(
-                        bucket=bucket,
-                        org=org,
-                        record=(Point("test_log").field("log", "load")),
-                    )
+                """if is_influxdb_installed:
+                write_api.write(
+                    bucket=bucket,
+                    org=org,
+                    record=(Point("test_log").field("log", "load")),
+                )"""
                 return json.load(f)
             except json.JSONDecodeError:
                 return {}
