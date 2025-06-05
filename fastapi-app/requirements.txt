@@ -6,3 +6,4 @@ pytest-html
 pytest-cov
 prometheus-fastapi-instrumentator
 prometheus-client
+influxdb-client
