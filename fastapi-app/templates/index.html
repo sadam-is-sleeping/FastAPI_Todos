@@ -22,78 +22,136 @@
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 			crossorigin="anonymous"
 		></script>
+		<!-- fullcalendar -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css"
+			rel="stylesheet"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 	</head>
 
 	<body>
 		<div class="container mt-5">
 			<h1>To-Do List</h1>
-			<ul id="todo-list" class="list-group mt-3"></ul>
-			<hr />
-			<form id="todo-form" class="mt-3" autocomplete="off">
-				<div class="row g-3">
-					<div class="col-md-2">
-						<input type="hidden" id="id" value="" />
-						<input
-							type="text"
-							id="title"
-							class="form-control"
-							placeholder="Title"
-							required
-						/>
-					</div>
-					<div class="col-md-5">
-						<input
-							type="text"
-							id="description"
-							class="form-control"
-							placeholder="Description"
-							required
-						/>
-					</div>
-					<div class="col-md-2 d-flex align-items-center flex-row">
-						<div class="form-check">
-							<input
-								class="form-check-input"
-								type="checkbox"
-								id="enable_due_to"
-							/>
-							<label
-								class="form-check-label"
-								id="enable_due_to_label"
-								for="enable_due_to"
-								>Enable Due Date</label
+
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button
+						class="nav-link active"
+						id="list-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#list-view"
+						type="button"
+						role="tab"
+						aria-controls="list-view"
+						aria-selected="true"
+					>
+						List View
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button
+						class="nav-link"
+						id="calendar-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#calendar-view"
+						type="button"
+						role="tab"
+						aria-controls="calendar-view"
+						aria-selected="false"
+					>
+						Calendar View
+					</button>
+				</li>
+			</ul>
+
+			<div class="tab-content" id="myTabContent">
+				<div
+					class="tab-pane fade show active"
+					id="list-view"
+					role="tabpanel"
+					aria-labelledby="list-tab"
+				>
+					<ul id="todo-list" class="list-group mt-3"></ul>
+					<hr />
+					<form id="todo-form" class="mt-3" autocomplete="off">
+						<div class="row g-3">
+							<div class="col-md-2">
+								<input type="hidden" id="id" value="" />
+								<input
+									type="text"
+									id="title"
+									class="form-control"
+									placeholder="Title"
+									required
+								/>
+							</div>
+							<div class="col-md-5">
+								<input
+									type="text"
+									id="description"
+									class="form-control"
+									placeholder="Description"
+									required
+								/>
+							</div>
+							<div
+								class="col-md-2 d-flex align-items-center flex-row"
 							>
+								<div class="form-check">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										id="enable_due_to"
+									/>
+									<label
+										class="form-check-label"
+										id="enable_due_to_label"
+										for="enable_due_to"
+										>Enable Due Date</label
+									>
+								</div>
+								<input
+									type="date"
+									id="due_to"
+									class="form-control"
+									placeholder="Due Date (Optional)"
+									style="display: none"
+								/>
+							</div>
+							<div class="col-md-2">
+								<button
+									type="submit"
+									id="submit-btn"
+									class="btn btn-primary w-100"
+								>
+									Add To-Do
+								</button>
+							</div>
+							<div class="col-md-1">
+								<button
+									type="button"
+									id="clear-btn"
+									class="btn btn-light w-100"
+								>
+									Clear
+								</button>
+							</div>
 						</div>
-						<input
-							type="date"
-							id="due_to"
-							class="form-control"
-							placeholder="Due Date (Optional)"
-							style="display: none"
-						/>
-					</div>
-					<div class="col-md-2">
-						<button
-							type="submit"
-							id="submit-btn"
-							class="btn btn-primary w-100"
-						>
-							Add To-Do
-						</button>
-					</div>
-					<div class="col-md-1">
-						<button
-							type="button"
-							id="clear-btn"
-							class="btn btn-light w-100"
-						>
-							Clear
-						</button>
-					</div>
+					</form>
 				</div>
-			</form>
+
+				<div
+					class="tab-pane fade"
+					id="calendar-view"
+					role="tabpanel"
+					aria-labelledby="calendar-tab"
+				>
+					<div id="calendar" class="mt-3"></div>
+				</div>
+			</div>
 		</div>
-		<!-- Delete Confirmation Modal -->
+
 		<div class="modal fade" id="deleteModal" tabindex="-1">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -129,7 +187,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- Deletion Toast -->
 		<div
 			class="toast-container position-fixed bottom-0 end-0 p-3"
 			id="toast-container"
@@ -171,6 +228,8 @@
 				}
 			});
 
+			let calendar; // Declare calendar globally
+
 			async function fetchTodos() {
 				const response = await fetch("/todos");
 				const todos_json = await response.json();
@@ -178,6 +237,8 @@
 
 				const todoList = document.getElementById("todo-list");
 				todoList.innerHTML = "";
+
+				const calendarEvents = [];
 
 				todos.forEach((todo, index) => {
 					const li = document.createElement("li");
@@ -194,11 +255,12 @@
 					// Todo content
 					const todoContent = document.createElement("div");
 					todoContent.innerHTML = `
-			<strong>${todo.title}:</strong> ${todo.description} 
-			<br><small class="text-muted">${dateTime}</small>`;
+            <strong>${todo.title}:</strong> ${todo.description} 
+            <br><small class="text-muted">${dateTime}</small>`;
 					if (todo.completed)
 						todoContent.innerHTML += `<span class="badge bg-success ms-2">Completed</span>`;
-					else if (todo.due_to && todo.due_to < new Date())
+					else if (todo.due_to && todo.due_to < Date.now())
+						// Compare with current timestamp
 						todoContent.innerHTML += `<span class="badge bg-danger ms-2">Expired</span>`;
 					else
 						todoContent.innerHTML += `<span class="badge bg-secondary ms-2">Pending</span>`;
@@ -258,7 +320,37 @@
 					li.addEventListener("drop", handleDrop);
 
 					todoList.appendChild(li);
+
+					// Prepare event for FullCalendar
+					const calendarEvent = {
+						id: todo.id,
+						title: todo.title,
+						start: new Date(todo.id), // Created time
+						color: todo.completed
+							? "#28a745"
+							: todo.due_to && todo.due_to < Date.now()
+							? "#dc3545"
+							: "#6c757d", // Green for completed, red for expired, grey for pending
+						extendedProps: {
+							description: todo.description,
+						},
+					};
+
+					if (todo.due_to) {
+						calendarEvent.end = new Date(todo.due_to);
+						// FullCalendar's end date is exclusive, so add a day to include the due date itself
+						calendarEvent.end.setDate(
+							calendarEvent.end.getDate() + 1
+						);
+					}
+					calendarEvents.push(calendarEvent);
 				});
+
+				// Render calendar events
+				if (calendar) {
+					calendar.setOption("events", calendarEvents);
+				}
+
 				const tooltipTriggerList = document.querySelectorAll(
 					'[data-bs-toggle="tooltip"]'
 				);
@@ -303,7 +395,7 @@
 					}
 
 					// Update index attributes
-					[...todoList.children].forEach((item, newIndex) => {
+					Array.from(todoList.children).forEach((item, newIndex) => {
 						item.dataset.index = newIndex;
 					});
 					updateTodoOrder();
@@ -326,8 +418,14 @@
 				if (todo.due_to) {
 					document.getElementById("due_to").style.display =
 						"inline-block";
-					document.getElementById("due_to").valueAsNumber =
-						todo.due_to;
+					// Convert timestamp to YYYY-MM-DD for date input
+					const date = new Date(todo.due_to);
+					const year = date.getFullYear();
+					const month = String(date.getMonth() + 1).padStart(2, "0");
+					const day = String(date.getDate()).padStart(2, "0");
+					document.getElementById(
+						"due_to"
+					).value = `${year}-${month}-${day}`;
 					document.getElementById("enable_due_to").checked = true;
 					document.getElementById(
 						"enable_due_to_label"
@@ -355,6 +453,11 @@
 					document.getElementById("due_to").value = "";
 					document.getElementById("submit-btn").textContent =
 						"Add To-Do";
+					document.getElementById("enable_due_to").checked = false;
+					document.getElementById(
+						"enable_due_to_label"
+					).style.display = "inline-block";
+					document.getElementById("due_to").style.display = "none";
 				});
 
 			// toggle completed
@@ -418,10 +521,17 @@
 					const title = document.getElementById("title").value;
 					const description =
 						document.getElementById("description").value;
-					const due_to =
-						(document.getElementById("enable_due_to").checked &&
-							document.getElementById("due_to").valueAsNumber) ||
-						0;
+					// Convert due_to date string to timestamp if enabled
+					const due_to_input = document.getElementById("due_to");
+					let due_to = 0;
+					if (
+						document.getElementById("enable_due_to").checked &&
+						due_to_input.value
+					) {
+						// Parse date string and convert to timestamp
+						due_to = new Date(due_to_input.value).getTime();
+					}
+
 					const todoData = {
 						id,
 						title,
@@ -477,7 +587,7 @@
 						document.getElementById("submit-btn").textContent =
 							"Add To-Do";
 
-						// Refresh todo list
+						// Refresh todo list and calendar
 						fetchTodos();
 					} else {
 						console.error("Failed to save todo");
@@ -528,7 +638,7 @@
 								);
 								deletedToast.show();
 							}
-							// Refresh todo list
+							// Refresh todo list and calendar
 							fetchTodos();
 						} catch (error) {
 							console.error(
@@ -539,8 +649,64 @@
 					}
 				});
 
-			// Initial load
-			fetchTodos();
+			// Initialize FullCalendar
+			document.addEventListener("DOMContentLoaded", () => {
+				const calendarEl = document.getElementById("calendar");
+				calendar = new FullCalendar.Calendar(calendarEl, {
+					initialView: "dayGridMonth", // Only dayGridMonth as requested
+					headerToolbar: {
+						left: "prev,next today",
+						center: "title",
+						right: "dayGridMonth", // Only dayGridMonth as requested
+					},
+					events: [], // Events will be populated by fetchTodos
+					eventDidMount: function (info) {
+						// Add tooltips to calendar events for description
+						if (info.event.extendedProps.description) {
+							info.el.setAttribute("data-bs-toggle", "tooltip");
+							info.el.setAttribute(
+								"data-bs-title",
+								info.event.extendedProps.description
+							);
+							new bootstrap.Tooltip(info.el);
+						}
+					},
+					eventClick: function (info) {
+						// Allow clicking on calendar events to edit the todo
+						const todoId = info.event.id;
+						fetch(`/todos/${todoId}`)
+							.then((response) => response.json())
+							.then((todo) => {
+								editTodo(todo);
+								// Switch to list view when editing a todo from the calendar
+								const listViewTab =
+									document.getElementById("list-tab");
+								const listViewPane =
+									document.getElementById("list-view");
+								bootstrap.Tab.getInstance(listViewTab).show();
+							})
+							.catch((error) =>
+								console.error(
+									"Error fetching todo for edit:",
+									error
+								)
+							);
+					},
+				});
+				calendar.render();
+
+				// Initial load of todos for both list and calendar
+				fetchTodos();
+			});
+
+			// Re-render calendar when tab is shown to ensure it's displayed correctly
+			document
+				.getElementById("calendar-tab")
+				.addEventListener("shown.bs.tab", () => {
+					if (calendar) {
+						calendar.render();
+					}
+				});
 		</script>
 	</body>
 </html>
