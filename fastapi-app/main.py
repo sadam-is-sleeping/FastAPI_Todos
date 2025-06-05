@@ -9,13 +9,13 @@ from multiprocessing import Queue
 from os import getenv
 from prometheus_fastapi_instrumentator import Instrumentator
 
-# from logging_loki import LokiQueueHandler
+from logging_loki import LokiQueueHandler
 
 app = FastAPI()
 
 # Prometheus 메트릭스 엔드포인트 (/metrics)
 Instrumentator().instrument(app).expose(app, endpoint="/metrics")
-"""
+
 loki_logs_handler = LokiQueueHandler(
     Queue(-1),
     url=getenv("LOKI_ENDPOINT"),
@@ -46,7 +46,6 @@ async def log_requests(request: Request, call_next):
 
 
 app.middleware("http")(log_requests)
-"""
 
 
 # To-Do Item model
