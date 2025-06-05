@@ -11,6 +11,42 @@ app = FastAPI()
 # Prometheus 메트릭스 엔드포인트 (/metrics)
 Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
+is_influxdb_installed = False
+try:
+    from influxdb_client import InfluxDBClient, Point
+    from influxdb_client.client.write_api import SYNCHRONOUS
+
+    is_influxdb_installed = True
+except ImportError:
+    print("influxdb-client not installed!")
+
+if is_influxdb_installed:
+    # token = os.environ.get("INFLUXDB_TOKEN")
+    url = "http://influxdb2:8086"
+    token = "token"
+    org = "sogang"
+    bucket = "home"
+    write_client = InfluxDBClient(
+        # Service name: influxdb2
+        url=url,
+        token=token,
+        org=org,
+    )
+    write_api = write_client.write_api(write_options=SYNCHRONOUS)
+
+    for value in range(5):
+        point = (
+            Point("test_measurement")
+            .tag("tagname1", "tagvalue1")
+            .field("field1", value)
+        )
+        write_api.write(
+            bucket=bucket,
+            org=org,
+            record=point,
+        )
+
+
 # To-Do Item model
 class TodoItem(BaseModel):
     id: int
@@ -30,6 +66,12 @@ def load_todos() -> dict:
     if TODO_FILE.is_file():
         with open(TODO_FILE, mode = 'rt', encoding = 'utf-8') as f:
             try:
+                if is_influxdb_installed:
+                    write_api.write(
+                        bucket=bucket,
+                        org=org,
+                        record=(Point("test_log").field("log", "load")),
+                    )
                 return json.load(f)
             except json.JSONDecodeError:
                 return {}
