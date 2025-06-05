@@ -1,390 +1,546 @@
 <!DOCTYPE html>
 <html lang="ko-KR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>To-Do List</title>
+		<!-- set favicon, got it from Google's material icon -->
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZThlYWVkIj48cGF0aCBkPSJNMjI3LTE2OCA1Mi0zNDJsODktODggODUgODUgMTcwLTE3MSA4OCA5MC0yNTcgMjU4Wm0wLTMyMEw1Mi02NjJsODktODggODUgODUgMTcwLTE3MSA4OCA5MC0yNTcgMjU4Wm0yOTggMjMxdi0xMjZoMzgzdjEyNkg1MjVabTAtMzIwdi0xMjZoMzgzdjEyNkg1MjVaIi8+PC9zdmc+"
+		/>
+		<!-- bootstrap -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+			crossorigin="anonymous"
+		/>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"
+		></script>
+	</head>
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>To-Do List</title>
-	<!-- set favicon, got it from Google's material icon -->
-	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZThlYWVkIj48cGF0aCBkPSJNMjI3LTE2OCA1Mi0zNDJsODktODggODUgODUgMTcwLTE3MSA4OCA5MC0yNTcgMjU4Wm0wLTMyMEw1Mi02NjJsODktODggODUgODUgMTcwLTE3MSA4OCA5MC0yNTcgMjU4Wm0yOTggMjMxdi0xMjZoMzgzdjEyNkg1MjVabTAtMzIwdi0xMjZoMzgzdjEyNkg1MjVaIi8+PC9zdmc+" />
-	<!-- bootstrap -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</head>
-
-<body>
-	<div class="container mt-5">
-		<h1>To-Do List</h1>
-		<ul id="todo-list" class="list-group mt-3"></ul>
-		<hr>
-		<form id="todo-form" class="mt-3" autocomplete="off">
-			<div class="row g-3">
-				<div class="col-md-2">
-					<input type="hidden" id="id" value="">
-					<input type="text" id="title" class="form-control" placeholder="Title" required>
-				</div>
-				<div class="col-md-5">
-					<input type="text" id="description" class="form-control" placeholder="Description" required>
-				</div>
-				<div class="col-md-2 d-flex align-items-center flex-row">
-					<div class="form-check">
-						<input class="form-check-input" type="checkbox" id="enable_due_to">
-						<label class="form-check-label" id="enable_due_to_label" for="enable_due_to">Enable Due Date</label>
+	<body>
+		<div class="container mt-5">
+			<h1>To-Do List</h1>
+			<ul id="todo-list" class="list-group mt-3"></ul>
+			<hr />
+			<form id="todo-form" class="mt-3" autocomplete="off">
+				<div class="row g-3">
+					<div class="col-md-2">
+						<input type="hidden" id="id" value="" />
+						<input
+							type="text"
+							id="title"
+							class="form-control"
+							placeholder="Title"
+							required
+						/>
 					</div>
-					<input type="date" id="due_to" class="form-control" placeholder="Due Date (Optional)" style="display: none;">
+					<div class="col-md-5">
+						<input
+							type="text"
+							id="description"
+							class="form-control"
+							placeholder="Description"
+							required
+						/>
+					</div>
+					<div class="col-md-2 d-flex align-items-center flex-row">
+						<div class="form-check">
+							<input
+								class="form-check-input"
+								type="checkbox"
+								id="enable_due_to"
+							/>
+							<label
+								class="form-check-label"
+								id="enable_due_to_label"
+								for="enable_due_to"
+								>Enable Due Date</label
+							>
+						</div>
+						<input
+							type="date"
+							id="due_to"
+							class="form-control"
+							placeholder="Due Date (Optional)"
+							style="display: none"
+						/>
+					</div>
+					<div class="col-md-2">
+						<button
+							type="submit"
+							id="submit-btn"
+							class="btn btn-primary w-100"
+						>
+							Add To-Do
+						</button>
+					</div>
+					<div class="col-md-1">
+						<button
+							type="button"
+							id="clear-btn"
+							class="btn btn-light w-100"
+						>
+							Clear
+						</button>
+					</div>
 				</div>
-				<div class="col-md-2">
-					<button type="submit" id="submit-btn" class="btn btn-primary w-100">Add To-Do</button>
-				</div>
-				<div class="col-md-1">
-					<button type="button" id="clear-btn" class="btn btn-light w-100">Clear</button>
-				</div>
-			</div>
-		</form>
-	</div>
-	<!-- Delete Confirmation Modal -->
-	<div class="modal fade" id="deleteModal" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">To-Do List</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-				</div>
-				<div class="modal-body">
-					<p>Do you really want to delete?</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-danger" id="confirmDelete" data-bs-dismiss="modal" data-todo-id="">Delete</button>
+			</form>
+		</div>
+		<!-- Delete Confirmation Modal -->
+		<div class="modal fade" id="deleteModal" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">To-Do List</h5>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+						></button>
+					</div>
+					<div class="modal-body">
+						<p>Do you really want to delete?</p>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="btn btn-secondary"
+							data-bs-dismiss="modal"
+						>
+							Cancel
+						</button>
+						<button
+							type="button"
+							class="btn btn-danger"
+							id="confirmDelete"
+							data-bs-dismiss="modal"
+							data-todo-id=""
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- Deletion Toast -->
-	<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container">
-		<div id="deletedToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="toast-header">
-				<strong class="me-auto" id="toastTodoTitle"></strong>
-				<small id="toastTodoTime"></small>
-				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+		<!-- Deletion Toast -->
+		<div
+			class="toast-container position-fixed bottom-0 end-0 p-3"
+			id="toast-container"
+		>
+			<div
+				id="deletedToast"
+				class="toast"
+				role="alert"
+				aria-live="assertive"
+				aria-atomic="true"
+			>
+				<div class="toast-header">
+					<strong class="me-auto" id="toastTodoTitle"></strong>
+					<small id="toastTodoTime"></small>
+					<button
+						type="button"
+						class="btn-close"
+						data-bs-dismiss="toast"
+						aria-label="Close"
+					></button>
+				</div>
+				<div class="toast-body">
+					To-Do has been deleted successfully.
+				</div>
 			</div>
-			<div class="toast-body">
-				To-Do has been deleted successfully.
-			</div>
-		  </div>
-	</div>
-	<script>
-	const chk_due = document.getElementById('enable_due_to');
-	const lbl_due = document.getElementById('enable_due_to_label');
-	const time_due = document.getElementById('due_to');
+		</div>
+		<script>
+			const chk_due = document.getElementById("enable_due_to");
+			const lbl_due = document.getElementById("enable_due_to_label");
+			const time_due = document.getElementById("due_to");
 
-	chk_due.addEventListener('change', () => {
-		if (chk_due.checked) {
-			lbl_due.style.display = 'none';
-			time_due.style.display = 'inline-block';
-		} else {
-			lbl_due.style.display = 'inline-block';
-			time_due.style.display = 'none';
-		}
-	});
+			chk_due.addEventListener("change", () => {
+				if (chk_due.checked) {
+					lbl_due.style.display = "none";
+					time_due.style.display = "inline-block";
+				} else {
+					lbl_due.style.display = "inline-block";
+					time_due.style.display = "none";
+				}
+			});
 
-	async function fetchTodos() {
-		const response = await fetch('/todos');
-		const todos_json = await response.json();
-		const todos = Object.values(todos_json);
+			async function fetchTodos() {
+				const response = await fetch("/todos");
+				const todos_json = await response.json();
+				const todos = Object.values(todos_json);
 
-		const todoList = document.getElementById('todo-list');
-		todoList.innerHTML = '';
+				const todoList = document.getElementById("todo-list");
+				todoList.innerHTML = "";
 
-		todos.forEach((todo, index) => {
-			const li = document.createElement('li');
-			li.className = 'list-group-item d-flex justify-content-between align-items-center';
-			li.id = `todo-${todo.id}`;
-			li.setAttribute('draggable', 'true'); // Enable dragging
-			li.addEventListener('dblclick', () => editTodo(todo)); // Double-click to edit
-			li.dataset.index = index; // Store index for ordering
+				todos.forEach((todo, index) => {
+					const li = document.createElement("li");
+					li.className =
+						"list-group-item d-flex justify-content-between align-items-center";
+					li.id = `todo-${todo.id}`;
+					li.setAttribute("draggable", "true"); // Enable dragging
+					li.addEventListener("dblclick", () => editTodo(todo)); // Double-click to edit
+					li.dataset.index = index; // Store index for ordering
 
-			// Convert timestamp to readable date-time format
-			const dateTime = new Date(todo.id).toLocaleString();
+					// Convert timestamp to readable date-time format
+					const dateTime = new Date(todo.id).toLocaleString();
 
-			// Todo content
-			const todoContent = document.createElement('div');
-			todoContent.innerHTML = `
+					// Todo content
+					const todoContent = document.createElement("div");
+					todoContent.innerHTML = `
 			<strong>${todo.title}:</strong> ${todo.description} 
 			<br><small class="text-muted">${dateTime}</small>`;
-			if (todo.completed)
-				todoContent.innerHTML += `<span class="badge bg-success ms-2">Completed</span>`;
-			else if (todo.due_to && todo.due_to < new Date())
-				todoContent.innerHTML += `<span class="badge bg-danger ms-2">Expired</span>`;
-			else todoContent.innerHTML += `<span class="badge bg-secondary ms-2">Pending</span>`;
+					if (todo.completed)
+						todoContent.innerHTML += `<span class="badge bg-success ms-2">Completed</span>`;
+					else if (todo.due_to && todo.due_to < new Date())
+						todoContent.innerHTML += `<span class="badge bg-danger ms-2">Expired</span>`;
+					else
+						todoContent.innerHTML += `<span class="badge bg-secondary ms-2">Pending</span>`;
 
-			if (todo.due_to) {
-				todoContent.setAttribute('data-bs-toggle', 'tooltip');
-				todoContent.setAttribute('data-bs-title', `Due To: ${new Date(todo.due_to).toLocaleDateString()}`);
+					if (todo.due_to) {
+						todoContent.setAttribute("data-bs-toggle", "tooltip");
+						todoContent.setAttribute(
+							"data-bs-title",
+							`Due To: ${new Date(
+								todo.due_to
+							).toLocaleDateString()}`
+						);
+					}
+
+					const buttonsDiv = document.createElement("div");
+					buttonsDiv.className = "btn-group";
+					buttonsDiv.role = "group";
+
+					// Edit Button
+					const editBtn = document.createElement("button");
+					editBtn.className = "btn btn-secondary btn-sm";
+					editBtn.textContent = "Edit";
+					editBtn.addEventListener("click", () => editTodo(todo));
+
+					// Delete Button
+					const deleteBtn = document.createElement("button");
+					deleteBtn.className = "btn btn-danger btn-sm";
+					deleteBtn.textContent = "Delete";
+					deleteBtn.setAttribute("data-bs-toggle", "modal");
+					deleteBtn.setAttribute("data-bs-target", "#deleteModal");
+					deleteBtn.addEventListener("click", () =>
+						prepareDelete(todo.id)
+					);
+
+					// Toggle Completion Button
+					const toggleBtn = document.createElement("button");
+					toggleBtn.className = `btn btn-sm ${
+						todo.completed ? "btn-warning" : "btn-success"
+					}`;
+					toggleBtn.textContent = todo.completed
+						? "Mark Incomplete"
+						: "Mark Complete";
+					toggleBtn.addEventListener("click", () =>
+						toggleCompletion(todo)
+					);
+
+					buttonsDiv.appendChild(toggleBtn);
+					buttonsDiv.appendChild(editBtn);
+					buttonsDiv.appendChild(deleteBtn);
+
+					li.appendChild(todoContent);
+					li.appendChild(buttonsDiv);
+
+					// Add drag events
+					li.addEventListener("dragstart", handleDragStart);
+					li.addEventListener("dragover", handleDragOver);
+					li.addEventListener("drop", handleDrop);
+
+					todoList.appendChild(li);
+				});
+				const tooltipTriggerList = document.querySelectorAll(
+					'[data-bs-toggle="tooltip"]'
+				);
+				const tooltipList = [...tooltipTriggerList].map(
+					(tooltipTriggerEl) =>
+						new bootstrap.Tooltip(tooltipTriggerEl)
+				);
 			}
 
-			const buttonsDiv = document.createElement('div');
-			buttonsDiv.className = 'btn-group';
-			buttonsDiv.role = 'group';
+			// Drag and Drop Handlers
+			let draggedItem = null;
 
-			// Edit Button
-			const editBtn = document.createElement('button');
-			editBtn.className = 'btn btn-secondary btn-sm';
-			editBtn.textContent = 'Edit';
-			editBtn.addEventListener('click', () => editTodo(todo));
-
-			// Delete Button
-			const deleteBtn = document.createElement('button');
-			deleteBtn.className = 'btn btn-danger btn-sm';
-			deleteBtn.textContent = 'Delete';
-			deleteBtn.setAttribute('data-bs-toggle', 'modal');
-			deleteBtn.setAttribute('data-bs-target', '#deleteModal');
-			deleteBtn.addEventListener('click', () => prepareDelete(todo.id));
-
-			// Toggle Completion Button
-			const toggleBtn = document.createElement('button');
-			toggleBtn.className = `btn btn-sm ${todo.completed ? 'btn-warning' : 'btn-success'}`;
-			toggleBtn.textContent = todo.completed ? 'Mark Incomplete' : 'Mark Complete';
-			toggleBtn.addEventListener('click', () => toggleCompletion(todo));
-
-			buttonsDiv.appendChild(toggleBtn);
-			buttonsDiv.appendChild(editBtn);
-			buttonsDiv.appendChild(deleteBtn);
-
-			li.appendChild(todoContent);
-			li.appendChild(buttonsDiv);
-
-			// Add drag events
-			li.addEventListener('dragstart', handleDragStart);
-			li.addEventListener('dragover', handleDragOver);
-			li.addEventListener('drop', handleDrop);
-
-			todoList.appendChild(li);
-		});
-		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-	}
-
-	// Drag and Drop Handlers
-	let draggedItem = null;
-
-	function handleDragStart(event) {
-		draggedItem = event.target;
-		event.dataTransfer.effectAllowed = "move";
-		event.dataTransfer.setData("text/plain", draggedItem.dataset.index);
-	}
-
-	function handleDragOver(event) {
-		event.preventDefault();
-		event.dataTransfer.dropEffect = "move";
-	}
-
-	function handleDrop(event) {
-		event.preventDefault();
-
-		const todoList = document.getElementById('todo-list');
-		const targetItem = event.target.closest("li");
-
-		if (draggedItem && targetItem && draggedItem !== targetItem) {
-			const draggedIndex = draggedItem.dataset.index;
-			const targetIndex = targetItem.dataset.index;
-
-			// Swap elements
-			if (draggedIndex < targetIndex) {
-				targetItem.after(draggedItem);
-			} else {
-				targetItem.before(draggedItem);
+			function handleDragStart(event) {
+				draggedItem = event.target;
+				event.dataTransfer.effectAllowed = "move";
+				event.dataTransfer.setData(
+					"text/plain",
+					draggedItem.dataset.index
+				);
 			}
 
-			// Update index attributes
-			[...todoList.children].forEach((item, newIndex) => {
-				item.dataset.index = newIndex;
-			});
-			updateTodoOrder();
-		}
-	}
-
-
-	// prepare delete operation
-	function prepareDelete(todoId) {
-		// store todo id to del btn
-		document.getElementById('confirmDelete').setAttribute('data-todo-id', todoId);
-	}
-
-	// edit
-	function editTodo(todo) {
-		document.getElementById('id').value = todo.id;
-		document.getElementById('title').value = todo.title;
-		document.getElementById('description').value = todo.description;
-		if (todo.due_to) {
-			document.getElementById('due_to').style.display = 'inline-block';
-			document.getElementById('due_to').valueAsNumber = todo.due_to;
-			document.getElementById('enable_due_to').checked = true;
-			document.getElementById('enable_due_to_label').style.display = 'none';
-		} else {
-			document.getElementById('due_to').style.display = 'none';
-			document.getElementById('due_to').value = '';
-			document.getElementById('enable_due_to').checked = false;
-			document.getElementById('enable_due_to_label').style.display = 'inline-block';
-		}
-
-		// change to update
-		document.getElementById('submit-btn').textContent = 'Update To-Do';
-	}
-
-	document.getElementById('clear-btn').addEventListener('click', () => {
-		document.getElementById('id').value = '';
-		document.getElementById('title').value = '';
-		document.getElementById('description').value = '';
-		document.getElementById('due_to').value = '';
-		document.getElementById('submit-btn').textContent = 'Add To-Do';
-	});
-
-	// toggle completed
-	async function toggleCompletion(todo) {
-		const updatedTodo = {
-			id: todo.id,
-			title: todo.title,
-			description: todo.description,
-			due_to: todo.due_to,
-			completed: !todo.completed
-		};
-
-		const response = await fetch(`/todos/${todo.id}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(updatedTodo)
-		});
-
-		if (response.ok) {
-			fetchTodos();
-		} else {
-			console.error('Failed to update todo');
-		}
-	}
-
-	async function updateTodoOrder() {
-		const todoList = document.getElementById('todo-list');
-		const orderedIds = Array.from(todoList.children).map(item => parseInt(item.id.split('-')[1]));
-		console.log(orderedIds);
-		try {
-			const response = await fetch('/reorder', {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(orderedIds)
-			});
-			if (!response.ok) {
-				console.error('Failed to update todo order');
+			function handleDragOver(event) {
+				event.preventDefault();
+				event.dataTransfer.dropEffect = "move";
 			}
-		} catch (error) {
-			console.error('Error while updating todo order:', error);
-		}
-	}
 
-	// submit (add & edit)
-	document.getElementById('todo-form').addEventListener('submit', async (event) => {
-		// let me handle it!
-		event.preventDefault();
+			function handleDrop(event) {
+				event.preventDefault();
 
-		const idInput = document.getElementById('id');
-		const id = idInput.value ? parseInt(idInput.value) : Date.now();
-		const title = document.getElementById('title').value;
-		const description = document.getElementById('description').value;
-		const due_to = (document.getElementById('enable_due_to').checked &&
-			document.getElementById('due_to').valueAsNumber) || 0;
-		const todoData = {
-			id,
-			title,
-			description,
-			due_to,
-			completed: false
-		};
+				const todoList = document.getElementById("todo-list");
+				const targetItem = event.target.closest("li");
 
-		let url = '/todos';
-		let method = 'POST';
+				if (draggedItem && targetItem && draggedItem !== targetItem) {
+					const draggedIndex = draggedItem.dataset.index;
+					const targetIndex = targetItem.dataset.index;
 
-		// If id exists, it's an update
-		// change url and method
-		if (idInput.value) {
-			url = `/todos/${id}`;
-			method = 'PUT';
+					// Swap elements
+					if (draggedIndex < targetIndex) {
+						targetItem.after(draggedItem);
+					} else {
+						targetItem.before(draggedItem);
+					}
 
-			// completion status
-			const existingTodoElement = document.getElementById(`todo-${id}`);
-			if (existingTodoElement) {
-				const completionBadge = existingTodoElement.querySelector('.badge');
-				todoData.completed = completionBadge && completionBadge.textContent === 'Completed';
+					// Update index attributes
+					[...todoList.children].forEach((item, newIndex) => {
+						item.dataset.index = newIndex;
+					});
+					updateTodoOrder();
+				}
 			}
-		}
 
-		const response = await fetch(url, {
-			method,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(todoData)
-		});
+			// prepare delete operation
+			function prepareDelete(todoId) {
+				// store todo id to del btn
+				document
+					.getElementById("confirmDelete")
+					.setAttribute("data-todo-id", todoId);
+			}
 
-		if (response.ok) {
-			// Reset form
-			idInput.value = '';
-			document.getElementById('title').value = '';
-			document.getElementById('description').value = '';
-			document.getElementById('enable_due_to').checked = false;
-			document.getElementById('due_to').value = '';
-			document.getElementById('enable_due_to_label').style.display = 'inline-block';
-			document.getElementById('due_to').style.display = 'none';
-			document.getElementById('submit-btn').textContent = 'Add To-Do';
+			// edit
+			function editTodo(todo) {
+				document.getElementById("id").value = todo.id;
+				document.getElementById("title").value = todo.title;
+				document.getElementById("description").value = todo.description;
+				if (todo.due_to) {
+					document.getElementById("due_to").style.display =
+						"inline-block";
+					document.getElementById("due_to").valueAsNumber =
+						todo.due_to;
+					document.getElementById("enable_due_to").checked = true;
+					document.getElementById(
+						"enable_due_to_label"
+					).style.display = "none";
+				} else {
+					document.getElementById("due_to").style.display = "none";
+					document.getElementById("due_to").value = "";
+					document.getElementById("enable_due_to").checked = false;
+					document.getElementById(
+						"enable_due_to_label"
+					).style.display = "inline-block";
+				}
 
-			// Refresh todo list
-			fetchTodos();
-		} else {
-			console.error('Failed to save todo');
-		}
-	});
+				// change to update
+				document.getElementById("submit-btn").textContent =
+					"Update To-Do";
+			}
 
-	// del
-	document.getElementById('deleteModal').addEventListener('shown.bs.modal', () => {
-		document.getElementById('confirmDelete').focus();
-	});
-	document.getElementById('confirmDelete').addEventListener('click', async (event) => {
-		// get todo id
-		const todoId = event.target.getAttribute('data-todo-id');
-
-		if (todoId) {
-			try {
-				const response = await fetch(`/todos/${todoId}`, {
-					method: 'DELETE'
+			document
+				.getElementById("clear-btn")
+				.addEventListener("click", () => {
+					document.getElementById("id").value = "";
+					document.getElementById("title").value = "";
+					document.getElementById("description").value = "";
+					document.getElementById("due_to").value = "";
+					document.getElementById("submit-btn").textContent =
+						"Add To-Do";
 				});
 
-				if (!response.ok) {
-					const errorData = await response.json();
-					console.error('Failed to delete todo:', errorData);
+			// toggle completed
+			async function toggleCompletion(todo) {
+				const updatedTodo = {
+					id: todo.id,
+					title: todo.title,
+					description: todo.description,
+					due_to: todo.due_to,
+					completed: !todo.completed,
+				};
+
+				const response = await fetch(`/todos/${todo.id}`, {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(updatedTodo),
+				});
+
+				if (response.ok) {
+					fetchTodos();
+				} else {
+					console.error("Failed to update todo");
 				}
-				else {
-					const todoElement = document.getElementById(`todo-${todoId}`);
-					const toastTodoTitle = document.getElementById('toastTodoTitle');
-					const toastTodoTime = document.getElementById('toastTodoTime');
-					toastTodoTitle.textContent = todoElement.querySelector('strong').textContent.slice(0, -1);
-					toastTodoTime.textContent = todoElement.querySelector('small').textContent;
-					const deletedToast = new bootstrap.Toast(document.getElementById('deletedToast'));
-					deletedToast.show();
-				}
-				// Refresh todo list
-				fetchTodos();
-			} catch (error) {
-				console.error('Error during delete operation:', error);
 			}
-		}
-	});
 
-	// Initial load
-	fetchTodos();
-	</script>
-</body>
+			async function updateTodoOrder() {
+				const todoList = document.getElementById("todo-list");
+				const orderedIds = Array.from(todoList.children).map((item) =>
+					parseInt(item.id.split("-")[1])
+				);
+				console.log(orderedIds);
+				try {
+					const response = await fetch("/reorder", {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(orderedIds),
+					});
+					if (!response.ok) {
+						console.error("Failed to update todo order");
+					}
+				} catch (error) {
+					console.error("Error while updating todo order:", error);
+				}
+			}
 
+			// submit (add & edit)
+			document
+				.getElementById("todo-form")
+				.addEventListener("submit", async (event) => {
+					// let me handle it!
+					event.preventDefault();
+
+					const idInput = document.getElementById("id");
+					const id = idInput.value
+						? parseInt(idInput.value)
+						: Date.now();
+					const title = document.getElementById("title").value;
+					const description =
+						document.getElementById("description").value;
+					const due_to =
+						(document.getElementById("enable_due_to").checked &&
+							document.getElementById("due_to").valueAsNumber) ||
+						0;
+					const todoData = {
+						id,
+						title,
+						description,
+						due_to,
+						completed: false,
+					};
+
+					let url = "/todos";
+					let method = "POST";
+
+					// If id exists, it's an update
+					// change url and method
+					if (idInput.value) {
+						url = `/todos/${id}`;
+						method = "PUT";
+
+						// completion status
+						const existingTodoElement = document.getElementById(
+							`todo-${id}`
+						);
+						if (existingTodoElement) {
+							const completionBadge =
+								existingTodoElement.querySelector(".badge");
+							todoData.completed =
+								completionBadge &&
+								completionBadge.textContent === "Completed";
+						}
+					}
+
+					const response = await fetch(url, {
+						method,
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(todoData),
+					});
+
+					if (response.ok) {
+						// Reset form
+						idInput.value = "";
+						document.getElementById("title").value = "";
+						document.getElementById("description").value = "";
+						document.getElementById(
+							"enable_due_to"
+						).checked = false;
+						document.getElementById("due_to").value = "";
+						document.getElementById(
+							"enable_due_to_label"
+						).style.display = "inline-block";
+						document.getElementById("due_to").style.display =
+							"none";
+						document.getElementById("submit-btn").textContent =
+							"Add To-Do";
+
+						// Refresh todo list
+						fetchTodos();
+					} else {
+						console.error("Failed to save todo");
+					}
+				});
+
+			// del
+			document
+				.getElementById("deleteModal")
+				.addEventListener("shown.bs.modal", () => {
+					document.getElementById("confirmDelete").focus();
+				});
+			document
+				.getElementById("confirmDelete")
+				.addEventListener("click", async (event) => {
+					// get todo id
+					const todoId = event.target.getAttribute("data-todo-id");
+
+					if (todoId) {
+						try {
+							const response = await fetch(`/todos/${todoId}`, {
+								method: "DELETE",
+							});
+
+							if (!response.ok) {
+								const errorData = await response.json();
+								console.error(
+									"Failed to delete todo:",
+									errorData
+								);
+							} else {
+								const todoElement = document.getElementById(
+									`todo-${todoId}`
+								);
+								const toastTodoTitle =
+									document.getElementById("toastTodoTitle");
+								const toastTodoTime =
+									document.getElementById("toastTodoTime");
+								toastTodoTitle.textContent = todoElement
+									.querySelector("strong")
+									.textContent.slice(0, -1);
+								toastTodoTime.textContent =
+									todoElement.querySelector(
+										"small"
+									).textContent;
+								const deletedToast = new bootstrap.Toast(
+									document.getElementById("deletedToast")
+								);
+								deletedToast.show();
+							}
+							// Refresh todo list
+							fetchTodos();
+						} catch (error) {
+							console.error(
+								"Error during delete operation:",
+								error
+							);
+						}
+					}
+				});
+
+			// Initial load
+			fetchTodos();
+		</script>
+	</body>
 </html>
